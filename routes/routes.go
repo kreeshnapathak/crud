@@ -5,14 +5,10 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/gorm"
 )
 
-func SetupRoutes(db *gorm.DB) *gin.Engine {
+func SetupRoutes() *gin.Engine {
 	r := gin.Default()
-	r.Use(func(c *gin.Context) {
-		c.Set("db", db)
-	})
 	fmt.Println("Routes are set up")
 	r.GET("/movies", controllers.GetMovies)
 	r.GET("/movies/:id", controllers.GetMovie)

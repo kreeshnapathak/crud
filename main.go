@@ -6,9 +6,7 @@ import (
 )
 
 func main() {
-
-	db := models.SetUpDB()
-	db.AutoMigrate(&models.Movie{})
-	r := routes.SetupRoutes(db)
-	r.Run()
+	r := routes.SetupRoutes()
+	models.SetUpDB()
+	r.Run("localhost:8003")
 }
