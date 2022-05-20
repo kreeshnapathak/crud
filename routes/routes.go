@@ -10,9 +10,8 @@ import (
 )
 
 func SetupRoutes() *gin.Engine {
-	var loginService services.LoginService = services.NewLoginService()
 	var jwtService services.JWTService = services.JWTAuthService()
-	var loginController controllers.LoginController = controllers.LoginHandler(loginService, jwtService)
+	var loginController controllers.LoginController = controllers.LoginHandler(jwtService)
 
 	r := gin.Default()
 	fmt.Println("Routes are set up")
