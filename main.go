@@ -8,5 +8,5 @@ import (
 func main() {
 	r := routes.SetupRoutes()
 	models.SetUpDB()
-	r.Run("localhost:8003")
+	r.Run("localhost:8008")
 }

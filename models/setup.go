@@ -24,6 +24,7 @@ func SetUpDB() {
 		panic(err.Error())
 	}
 	db.AutoMigrate(&Movie{})
+	db.AutoMigrate(&User{})
 	// defer db.Close() // close the connection when the function returns
 	DB = db
 }
