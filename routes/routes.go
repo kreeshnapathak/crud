@@ -2,6 +2,7 @@ package routes
 
 import (
 	"crud/controllers"
+	"crud/middleware"
 	"crud/services"
 	"fmt"
 	"net/http"
@@ -9,17 +10,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Server struct {
+	tokenMaker services.JWTService
+}
+
 func SetupRoutes() *gin.Engine {
 	var jwtService services.JWTService = services.JWTAuthService()
 	var loginController controllers.LoginController = controllers.LoginHandler(jwtService)
 
 	r := gin.Default()
 	fmt.Println("Routes are set up")
-	r.GET("/movies", controllers.GetMovies)
-	r.GET("/movies/:id", controllers.GetMovie)
-	r.POST("/movies", controllers.CreateMovie)
-	r.PATCH("/movies/:id", controllers.UpdateMovie)
-	r.DELETE("movies/:id", controllers.DeleteMovie)
+	ar := r.Group("/").Use(middleware.AuthMiddleware(jwtService))
+	ar.GET("/movies", controllers.GetMovies)
+	ar.GET("/movies/:id", controllers.GetMovie)
+	ar.POST("/movies", controllers.CreateMovie)
+	ar.PATCH("/movies/:id", controllers.UpdateMovie)
+	ar.DELETE("movies/:id", controllers.DeleteMovie)
 	r.POST("/signup", controllers.CreateUser)
 	r.POST("/login", func(ctx *gin.Context) {
 		token := loginController.Login(ctx)
