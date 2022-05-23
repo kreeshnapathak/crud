@@ -1,6 +1,7 @@
 package services
 
 import (
+	"crud/helpers"
 	"crud/models"
 )
 
@@ -15,12 +16,18 @@ type loginService struct {
 
 func LoginUser(email string, password string) bool {
 	var user models.User
-
-	if err := models.DB.Where("email = ?", email).First(&user).Error; err != nil {
+	if fetchError := models.DB.Where("email = ?", email).First(&user).Error; fetchError != nil {
 		return false
-	} else if email == user.Email && password == user.Password {
+	}
+	// Get hased password from DB
+	hashedPassword := []byte(user.Password)
+	// Get the password provided in the request.body
+	inputpassword := []byte(password)
+	err := helpers.PasswordCompare(inputpassword, hashedPassword)
+	if err == nil {
 		return true
 	} else {
 		return false
 	}
+
 }

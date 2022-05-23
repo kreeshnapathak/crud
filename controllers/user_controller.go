@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"crud/helpers"
 	"crud/models"
 	"net/http"
 
@@ -14,8 +15,9 @@ func CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	// Create task
-	user := models.User{ID: input.ID, Name: input.Name, Email: input.Email, Password: input.Password, IsVerified: input.IsVerified}
+	user := models.User{ID: input.ID, Name: input.Name, Email: input.Email, Password: helpers.GeneratePasswordHash([]byte(input.Password)), IsVerified: input.IsVerified}
 	models.DB.Create(&user)
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }

@@ -1,7 +1,9 @@
 package helpers
 
 // Allows us to hash and compare passwords
-import "golang.org/x/crypto/bcrypt"
+import (
+	"golang.org/x/crypto/bcrypt"
+)
 
 // GeneratePasswordHash handles generating password hash
 // bcrypt hashes password of type byte
@@ -21,6 +23,5 @@ func GeneratePasswordHash(password []byte) string {
 // PasswordCompare handles password hash compare
 func PasswordCompare(password []byte, hashedPassword []byte) error {
 	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
-
 	return err
 }
