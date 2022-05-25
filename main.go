@@ -8,6 +8,5 @@ import (
 func main() {
 	r := routes.SetupRoutes()
 	models.SetUpDB()
-
 	r.Run()
 }
